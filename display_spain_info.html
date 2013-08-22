@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<title>spain_info</title>
+
+</head>
+
+<body>
+<table width="300" border="1" id="macroData">
+  <tr>
+    <td width="80">GDP($)</td>
+    <td width="168" id="gdp">&nbsp;</td>
+    <td width="80" class="year">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Population</td>
+    <td id="population">&nbsp;</td>
+    <td width="80" class="year">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>CPI</td>
+    <td id="cpi">&nbsp;</td>
+    <td width="80" class="year">&nbsp;</td>
+  </tr>
+</table>
+<script type="text/javascript">
+	//alert("hello");
+	function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	var gdp = "";
+	var date = new Date();
+	var strYear = (date.getFullYear()-1).toString();
+	var url = "";
+	url = "http://api.worldbank.org/countries/es/indicators/NY.GDP.MKTP.CD?date=" + strYear + "&format=jsonP&prefix=Getdata1&callback=?";
+	//alert(url);
+	$.ajax(
+	{
+		url: url,
+		type:"GET",		
+		dataType:'jsonp',
+		jsonp:"false",
+		jsonpCallback:"Getdata1",
+		async:true,
+		cache: true,
+		success: function Getdata1(data){
+			//alert('Country: ' + data[1][0].country.value);
+			//alert('GDP value: ' + numberWithCommas(data[1][0].value) + '$ (' + data[1][0].date + ')');
+			//gdp = data[1][0].value;
+			//alert('gdp in ajax ' + gdp);
+			$('#macroData tr:nth-child(1) td:nth-child(2)').html(numberWithCommas(data[1][0].value));
+			//year = data[1][0].date;	
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			alert('failed in gdp');
+			alert(XMLHttpRequest.status);
+	       alert(XMLHttpRequest.readyState);
+	       alert(textStatus);
+
+		}
+	});
+	url = "http://api.worldbank.org/countries/es/indicators/FP.CPI.TOTL?date=" + strYear + "&format=jsonP&prefix=Getdata2&callback=?";
+	$.ajax(
+	{
+		url: url,
+		type:"GET",		
+		dataType:'jsonp',
+		jsonp:"false",
+		jsonpCallback:"Getdata2",
+		async:true,
+		cache: true,
+		success: function Getdata2(data){
+			//alert('CPI: ' + data[1][0].value);
+			cpi = data[1][0].value;
+			//alert(typeof cpi);
+			$('#cpi').html(parseFloat(cpi).toFixed(2));
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			alert('failed in cpi');
+			alert(XMLHttpRequest.status);
+	       alert(XMLHttpRequest.readyState);
+	       alert(textStatus);
+
+		}
+	});
+	
+	url = "http://api.worldbank.org/countries/es/indicators/SP.POP.TOTL?date=" + strYear + "&format=jsonP&prefix=Getdata3&callback=?"
+	$.ajax(
+	{
+		url: url,
+		type:"GET",		
+		dataType:'jsonp',
+		jsonp:"false",
+		jsonpCallback:"Getdata3",
+		async:true,
+		cache: true,
+		success: function Getdata3(data){
+			//alert('Population: ' + data[1][0].value);
+			//population = data[1][0].value;
+			$('#population').text(numberWithCommas(data[1][0].value));
+			$('.year').text(strYear);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			alert('failed in population');
+			alert(XMLHttpRequest.status);
+	       alert(XMLHttpRequest.readyState);
+	       alert(textStatus);
+
+		}
+	});
+	
+	$(document).ready(function(){
+		//alert('gdp' + gdp);
+		//$('#macroData tr:nth-child(1) td:nth-child(2)').html(gdp);
+		//$('#population').text(population);
+		//$('#cpi').html(cpi);
+	});
+		
+</script>
+</body>
+</html>
