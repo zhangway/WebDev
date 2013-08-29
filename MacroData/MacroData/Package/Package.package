@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="5b1ee824-bd49-4a91-a542-82edadd04a9e" 
+        solutionId="5b1ee824-bd49-4a91-a542-82edadd04a9e" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="MacroData"
+        sharePointProductVersion="15.0">
+  <features>
+        <featureReference itemId="45c7c8c6-2ab2-4e4b-9f1a-b0517bb413ff" />
+  </features>
+</package>
